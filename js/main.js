@@ -167,6 +167,9 @@ function displayRecentEmojis(emoji){
 function displayCustomEmojis(emoji){
   const newSpan = document.createElement("span");
   newSpan.innerHTML = emoji;
+  // set id to custom so that later we can use it to determine
+  // if it is an item which can be added to the recently used list.
+  newSpan.id = "custom";
   // the call to prepend() allows me to use normal forward iteration
   // thru the array but shows the most recently added emoji 
   // (highest index) first.
@@ -181,7 +184,10 @@ function emojiClickHandler(el) {
   }
   else{
   	allSelectedElements.push(el.target);
-  	selectElementContents();
+    selectElementContents();
+    if (el.target.id === "custom"){
+      addEmojiToRecentList(el.target.innerHTML);
+    }
   }
 }
 
