@@ -1,17 +1,16 @@
 let allSelectedElements = [];
-
+// this selector makes it so currently selected emojis are not unselected.
 document.querySelector("html").addEventListener("click", ()=>selectElementContents());
 
 function handleEmojiClick(el) {
-  
-  //var el = document.querySelector("#a");
   if (isSelected(el)){
     removeElement(el);
   	selectElementContents();
   }
   else{
   	allSelectedElements.push(el);
-  	selectElementContents();
+    selectElementContents();
+    addRecentEmoji(el);
   }
 }
 
@@ -36,10 +35,35 @@ function isSelected(el){
 }
 
 function selectElementContents() {
-	allSelectedElements.forEach(el => {
+  allSelectedElements.forEach(el => {
   var range = document.createRange();
   range.selectNodeContents(el);
   var sel = window.getSelection();
   sel.addRange(range);
   });
+}
+
+function unselectAll(){
+  allSelectedElements = [];
+  window.getSelection().removeAllRanges();
+}
+
+function addRecentEmoji(el){
+  
+  const newSpan = document.createElement("span");
+  newSpan.innerHTML = el.innerHTML;
+  document.querySelector("#v-pills-recent").appendChild(newSpan);
+  newSpan.addEventListener("click", emojiClickHandler);
+}
+
+function emojiClickHandler(el) {
+  if (isSelected(el.target)){
+    removeElement(el.target);
+  	selectElementContents();
+  }
+  else{
+  	allSelectedElements.push(el.target);
+  	selectElementContents();
+  }
+  console.log(el.target.innerHTML);
 }
