@@ -1,6 +1,21 @@
+const RECENTLY_USED_MAX = 50;
 let allSelectedElements = [];
+let recentlyUsedEmojis = [];
 // this selector makes it so currently selected emojis are not unselected.
 document.querySelector("html").addEventListener("click", ()=>selectElementContents());
+
+function loadRecentsFromLocalStorage(){
+  recentlyUsedEmojis = JSON.parse(localStorage.getItem("recentEmojis"));
+  if (recentlyUsedEmojis === null){
+    // if null set to an empty array,
+    // so array can later be pushed to
+    recentlyUsedEmojis = [];
+    return;
+  }
+  recentlyUsedEmojis.forEach(emoji => {
+    displayRecentEmojis(emoji);
+  });
+}
 
 function handleEmojiClick(el) {
   if (isSelected(el)){
@@ -10,7 +25,7 @@ function handleEmojiClick(el) {
   else{
   	allSelectedElements.push(el);
     selectElementContents();
-    addRecentEmoji(el);
+    addEmojiToRecentList(el.innerHTML);
   }
 }
 
@@ -48,11 +63,41 @@ function unselectAll(){
   window.getSelection().removeAllRanges();
 }
 
-function addRecentEmoji(el){
+function isEmojiNew(emoji){
+  for (let i = 0; i < recentlyUsedEmojis.length;i++){
+    if (recentlyUsedEmojis[i] === emoji){
+      // if the emoji is already in the list
+      // then just return
+      console.log("returning...")
+      return false;
+    }
+  }
+  return true;
+}
+
+function addEmojiToRecentList(emoji){
+  if (isEmojiNew(emoji) == false){
+    return;
+  }
+  displayRecentEmojis(emoji);
+  console.log("continuing...");
+  // if it isn't already in the list, then add it and save
+  // it to localStorage.
+  recentlyUsedEmojis.push(emoji);
+  if (recentlyUsedEmojis.length > RECENTLY_USED_MAX){
+    recentlyUsedEmojis.shift();
+  }
   
+  localStorage.setItem("recentEmojis", JSON.stringify(recentlyUsedEmojis));
+}
+
+function displayRecentEmojis(emoji){
   const newSpan = document.createElement("span");
-  newSpan.innerHTML = el.innerHTML;
-  document.querySelector("#v-pills-recent").appendChild(newSpan);
+  newSpan.innerHTML = emoji;
+  // the call to prepend() allows me to use normal forward iteration
+  // thru the array but shows the most recently added emoji 
+  // (highest index) first.
+  document.querySelector("#v-pills-recent").prepend(newSpan);
   newSpan.addEventListener("click", emojiClickHandler);
 }
 
@@ -65,5 +110,4 @@ function emojiClickHandler(el) {
   	allSelectedElements.push(el.target);
   	selectElementContents();
   }
-  console.log(el.target.innerHTML);
 }
