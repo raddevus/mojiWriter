@@ -18,6 +18,7 @@
             <a class="nav-link" id="v-pills-animals-tab" data-bs-toggle="pill" href="#v-pills-animals" role="tab" aria-controls="v-pills-animals" aria-selected="false">Animals</a>
             <a class="nav-link" id="v-pills-food-tab" data-bs-toggle="pill" href="#v-pills-food" role="tab" aria-controls="v-pills-food" aria-selected="false">Food</a>
             <a class="nav-link" id="v-pills-misc-tab" data-bs-toggle="pill" href="#v-pills-misc" role="tab" aria-controls="v-pills-misc" aria-selected="false">Misc</a>
+            <a class="nav-link" id="v-pills-custom-tab" data-bs-toggle="pill" href="#v-pills-custom" role="tab" aria-controls="v-pills-custom" aria-selected="false">Custom</a>
             <button type="button" class="btn btn-warning" onclick="unselectAll()">Unselect All</button>
             <div class="btn-group" role="group" aria-label="Emoji Size">
                 <input type="checkbox" class="btn-check" id="btncheck-xxlarge" autocomplete="off">
@@ -299,6 +300,12 @@
             <span onclick="handleEmojiClick(this)">&#129485;</span>
             <span onclick="handleEmojiClick(this)">&#129486;</span>
             <span onclick="handleEmojiClick(this)">&#129487;</span>
+        </div>
+        <div class="tab-pane fade emoji" id="v-pills-custom" role="tabpanel" aria-labelledby="v-pills-misc-custom">
+            <div class="input-group mb-3">
+                <input id="customEmojiText"type="text" class="form-control" placeholder="Add emojis here" aria-label="Add emojis here" aria-describedby="saveCustomEmoji">
+                <button id="saveCustomEmoji" class="btn btn-outline-primary" type="button" >Save</button>
+              </div>
         </div>
         </div>
         </div>

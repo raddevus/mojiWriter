@@ -1,6 +1,7 @@
 const RECENTLY_USED_MAX = 50;
 let allSelectedElements = [];
 let recentlyUsedEmojis = [];
+let customEmojis = [];
 let emojiSize = null;
 let isXXLargeChecked = false;
 
@@ -9,7 +10,9 @@ document.querySelector("html").addEventListener("click", ()=>selectElementConten
 
 function initializeApp(){
   document.querySelector("#btncheck-xxlarge").addEventListener("click",xxLargeButtonHandler);
+  document.querySelector("#saveCustomEmoji").addEventListener("click",saveCustomEmojiHandler);
   loadRecentsFromLocalStorage();
+  loadCustomEmojisFromLocalStorage();
   initializeXXLargeChecked();
   initializeEmojiSize();
 }
@@ -51,6 +54,17 @@ function xxLargeButtonHandler(){
   }
   localStorage.setItem("emojiSize", emojiSize);
   updateEmojiDisplaySize();
+}
+
+function loadCustomEmojisFromLocalStorage(){
+  customEmojis = JSON.parse(localStorage.getItem("customEmojis"));
+  if (customEmojis === null){
+    customEmojis = [];
+    return;
+  }
+  customEmojis.forEach(emoji => {
+    displayCustomEmojis(emoji);
+  });
 }
 
 function loadRecentsFromLocalStorage(){
@@ -112,9 +126,9 @@ function unselectAll(){
   window.getSelection().removeAllRanges();
 }
 
-function isEmojiNew(emoji){
-  for (let i = 0; i < recentlyUsedEmojis.length;i++){
-    if (recentlyUsedEmojis[i] === emoji){
+function isEmojiNew(emoji, targetArrayToSearch){
+  for (let i = 0; i < targetArrayToSearch.length;i++){
+    if (targetArrayToSearch[i] === emoji){
       // if the emoji is already in the list
       // then just return
       console.log("returning...")
@@ -125,7 +139,7 @@ function isEmojiNew(emoji){
 }
 
 function addEmojiToRecentList(emoji){
-  if (isEmojiNew(emoji) == false){
+  if (isEmojiNew(emoji,recentlyUsedEmojis) == false){
     return;
   }
   displayRecentEmojis(emoji);
@@ -150,6 +164,16 @@ function displayRecentEmojis(emoji){
   newSpan.addEventListener("click", emojiClickHandler);
 }
 
+function displayCustomEmojis(emoji){
+  const newSpan = document.createElement("span");
+  newSpan.innerHTML = emoji;
+  // the call to prepend() allows me to use normal forward iteration
+  // thru the array but shows the most recently added emoji 
+  // (highest index) first.
+  document.querySelector("#v-pills-custom").appendChild(newSpan);
+  newSpan.addEventListener("click", emojiClickHandler);
+}
+
 function emojiClickHandler(el) {
   if (isSelected(el.target)){
     removeElement(el.target);
@@ -158,5 +182,18 @@ function emojiClickHandler(el) {
   else{
   	allSelectedElements.push(el.target);
   	selectElementContents();
+  }
+}
+
+function saveCustomEmojiHandler(){
+  let allUserAddedEmojis = document.querySelector("#customEmojiText").value;
+  for (let i = 0; i < allUserAddedEmojis.length;i++){
+    let emoji = allUserAddedEmojis[i];
+    if (isEmojiNew(emoji,customEmojis)){
+      // if it's new, push it onto the list and write to to localstorage
+      customEmojis.push(emoji);
+      localStorage.setItem("customEmojis", JSON.stringify(customEmojis));
+      displayCustomEmojis(emoji);
+    }
   }
 }
