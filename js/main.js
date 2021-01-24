@@ -186,7 +186,9 @@ function emojiClickHandler(el) {
 }
 
 function saveCustomEmojiHandler(){
-  let allUserAddedEmojis = document.querySelector("#customEmojiText").value;
+  let allUserAddedEmojis = Array.from(document.querySelector("#customEmojiText").value);
+  document.querySelector("#customEmojiText").value = "";
+  let atLeastOneFailure = false;
   for (let i = 0; i < allUserAddedEmojis.length;i++){
     let emoji = allUserAddedEmojis[i];
     if (isEmojiNew(emoji,customEmojis)){
@@ -195,5 +197,18 @@ function saveCustomEmojiHandler(){
       localStorage.setItem("customEmojis", JSON.stringify(customEmojis));
       displayCustomEmojis(emoji);
     }
+    else{
+      atLeastOneFailure = true;
+    }
   }
+  if (atLeastOneFailure){
+    document.querySelector("#warn-alert").style.display = "block";
+    document.querySelector("#warn-alert").style.visibility = "visible";
+  }
+  else{
+    // all successfully saved
+    document.querySelector("#success-alert").style.display = "block";
+    document.querySelector("#success-alert").style.visibility = "visible";
+  }
+
 }
