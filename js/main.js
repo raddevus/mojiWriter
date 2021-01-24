@@ -1,8 +1,57 @@
 const RECENTLY_USED_MAX = 50;
 let allSelectedElements = [];
 let recentlyUsedEmojis = [];
+let emojiSize = null;
+let isXXLargeChecked = false;
+
 // this selector makes it so currently selected emojis are not unselected.
 document.querySelector("html").addEventListener("click", ()=>selectElementContents());
+
+function initializeApp(){
+  document.querySelector("#btncheck-xxlarge").addEventListener("click",xxLargeButtonHandler);
+  loadRecentsFromLocalStorage();
+  initializeXXLargeChecked();
+  initializeEmojiSize();
+}
+
+function initializeXXLargeChecked(){
+  isXXLargeChecked = JSON.parse(localStorage.getItem("isXXLargeChecked"));
+  if (isXXLargeChecked === null){
+    isXXLargeChecked = false;
+  }
+  console.log(`isXXLargeChecked : ${isXXLargeChecked}`);
+  document.querySelector("#btncheck-xxlarge").checked = isXXLargeChecked;
+}
+
+function initializeEmojiSize(){
+  emojiSize = localStorage.getItem("emojiSize");
+  if (emojiSize === null){
+    emojiSize = "x-large";
+    return;
+  }
+  updateEmojiDisplaySize();
+}
+
+function updateEmojiDisplaySize(){
+  //iterate through and set the size of all emoji elements
+  document.querySelectorAll(".emoji").forEach(emojiElement => {
+    emojiElement.style.fontSize = emojiSize;
+  });
+}
+
+function xxLargeButtonHandler(){
+  console.log("xxlarge....");
+  isXXLargeChecked = document.querySelector("#btncheck-xxlarge").checked;
+  localStorage.setItem("isXXLargeChecked", isXXLargeChecked);
+  if (isXXLargeChecked){
+    emojiSize = "xx-large";
+  }
+  else{
+    emojiSize = "x-large";
+  }
+  localStorage.setItem("emojiSize", emojiSize);
+  updateEmojiDisplaySize();
+}
 
 function loadRecentsFromLocalStorage(){
   recentlyUsedEmojis = JSON.parse(localStorage.getItem("recentEmojis"));

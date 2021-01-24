@@ -9,7 +9,7 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
         <script src="js/main.js"></script>
 	</head>
-	<body onload="loadRecentsFromLocalStorage()">
+	<body onload="initializeApp()">
     <div class="d-flex align-items-start">
         <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
             <a class="nav-link" id="v-pills-recent-tab" data-bs-toggle="pill" href="#v-pills-recent" role="tab" aria-controls="v-pills-recent" aria-selected="false">Recent</a>
@@ -19,6 +19,10 @@
             <a class="nav-link" id="v-pills-food-tab" data-bs-toggle="pill" href="#v-pills-food" role="tab" aria-controls="v-pills-food" aria-selected="false">Food</a>
             <a class="nav-link" id="v-pills-misc-tab" data-bs-toggle="pill" href="#v-pills-misc" role="tab" aria-controls="v-pills-misc" aria-selected="false">Misc</a>
             <button type="button" class="btn btn-warning" onclick="unselectAll()">Unselect All</button>
+            <div class="btn-group" role="group" aria-label="Emoji Size">
+                <input type="checkbox" class="btn-check" id="btncheck-xxlarge" autocomplete="off">
+                <label class="btn btn-outline-primary" for="btncheck-xxlarge">XX-Large</label>
+            </div>
         </div>
         <div class="tab-content" id="v-pills-tabContent">
         <div class="tab-pane fade show emoji" id="v-pills-recent" role="tabpanel" aria-labelledby="v-pills-recent-tab">
