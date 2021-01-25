@@ -304,12 +304,16 @@
         <div class="tab-pane fade emoji" id="v-pills-custom" role="tabpanel" aria-labelledby="v-pills-misc-custom">
             <div id="success-alert" class="alert alert-success alert-dismissible fade show" role="alert">
                 <strong>Success!</strong> The emoji(s) were successfully saved.
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>                
+                <button type="button" onclick="dismiss('success-alert')" class="btn-close" aria-label="Close"></button>
+            </div>
+            <div id="empty-alert" class="alert alert-warning alert-dismissible fade show" role="alert">
+                <strong>Warning! </strong>Please add an emoji and try again.
+                <button onclick="dismiss('empty-alert')" type="button" class="btn-close" aria-label="Close"></button>
+            </div> 
             <div id="warn-alert" class="alert alert-warning alert-dismissible fade show" role="alert">
                 <strong>Warning!</strong> One ore more emoji(s) were note saved, because they've
                 been added previously.
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                <button onclick="dismiss('warn-alert')" type="button" class="btn-close" aria-label="Close"></button>
             </div>                
             <div class="input-group mb-3">
                 <input id="customEmojiText"type="text" class="form-control" placeholder="Add emojis here" aria-label="Add emojis here" aria-describedby="saveCustomEmoji">

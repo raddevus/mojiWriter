@@ -192,6 +192,13 @@ function emojiClickHandler(el) {
 }
 
 function saveCustomEmojiHandler(){
+  dismiss("warn-alert");
+  dismiss("success-alert");
+  if (document.querySelector("#customEmojiText").value == ""){
+    document.querySelector("#empty-alert").style.display = "block";
+    document.querySelector("#empty-alert").style.visibility = "visible";
+    return;
+  }
   let allUserAddedEmojis = Array.from(document.querySelector("#customEmojiText").value);
   document.querySelector("#customEmojiText").value = "";
   let atLeastOneFailure = false;
@@ -216,5 +223,9 @@ function saveCustomEmojiHandler(){
     document.querySelector("#success-alert").style.display = "block";
     document.querySelector("#success-alert").style.visibility = "visible";
   }
+}
 
+function dismiss(target){
+  document.querySelector(`#${target}`).style.display = "none";
+  document.querySelector(`#${target}`).style.visibility = "hidden";
 }
