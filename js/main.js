@@ -3,6 +3,8 @@ let allSelectedElements = [];
 let recentlyUsedEmojis = [];
 let customEmojis = [];
 let isXXLargeChecked = false;
+let BACKGROUND_COLOR = "whitesmoke";
+let emojiList = "";
 
 
 function initApp(){
@@ -122,13 +124,12 @@ function loadRecentsFromLocalStorage(){
     return true;
   }
   
-  
-  
   function removeElement(el){
     let  foundItemIdx = -1;
     for (let i = 0;i < allSelectedElements.length;i++){
         if (allSelectedElements[i] === el){
             foundItemIdx = i;
+            el.style.backgroundColor = BACKGROUND_COLOR;
             break;
         }
     }
@@ -146,17 +147,38 @@ function loadRecentsFromLocalStorage(){
   }
   
   function displaySelectedElements() {
+    let tempEmojiList = "";
     allSelectedElements.forEach(el => {
-        var range = document.createRange();
-        range.selectNodeContents(el);
-        var sel = window.getSelection();
-        sel.addRange(range);
+      el.style.backgroundColor = 'red';
+      tempEmojiList += el.innerText;
     });
+    emojiList = tempEmojiList;
+    if (emojiList === ""){
+      // there are no emojis selected, need to set 
+      // clipboard to blank (one space value)
+      unselectAll();
+      return;
+    }
+    else{
+      // we have emojis so we want to copy them
+      document.querySelector("#emojiList").textContent = emojiList;
+      document.querySelector("#emojiList").value = emojiList;
+      document.querySelector("#emojiList").select();
+      document.querySelector("#emojiList").setSelectionRange(0,50);
+      document.execCommand("copy");
+    }
   }
 
   function unselectAll(){
+    allSelectedElements.forEach(e => {
+      e.style.backgroundColor = BACKGROUND_COLOR;
+    });
     allSelectedElements = [];
-    window.getSelection().removeAllRanges();
+    // copies empty string into clipboard
+    document.querySelector("#emojiList").value = " ";
+    document.querySelector("#emojiList").select();
+    document.querySelector("#emojiList").setSelectionRange(0,50);
+    document.execCommand("copy");
   }
 
   function saveCustomEmojiHandler(){

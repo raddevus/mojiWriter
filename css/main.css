@@ -4,5 +4,10 @@
     max-width:600px;
     padding: 5px;
 }
-
+/* Since the #emojiList is sent way out of the viewport,
+   we use this overflow-x on body to make sure scrollbars don't show up. */
+body{overflow-x: hidden;}
 .alert{font-size:small;display:none;visibility:hidden;}
+/* emojiList is the input text box that we don't want to see but
+   has to be visibile and displayed in order to copy text */
+#emojiList{z-index:-1;position:absolute;top:25px;left:5200px;}
