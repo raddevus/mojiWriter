@@ -10,8 +10,6 @@ let emojiList = "";
 function initApp(){
   attachEmojiClickListeners();
   document.querySelector("#btncheck-xxlarge").addEventListener("click",xxLargeButtonHandler);
-  // this selector makes it so currently selected emojis are not unselected.
-  document.querySelector("html").addEventListener("click", ()=>displaySelectedElements());
   document.querySelector("#saveCustomEmoji").addEventListener("click",saveCustomEmojiHandler);
 
   loadRecentsFromLocalStorage();
